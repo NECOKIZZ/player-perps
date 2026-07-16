@@ -34,7 +34,7 @@ import { DEFAULT_DIST_PARAMS, DEFAULT_PAYOUT_PARAMS } from "./engine.ts";
 import * as fs from "fs";
 
 const AUTH_CACHE = "/tmp/txline-auth.json";
-const UI_DIR = process.env.HOME + "/Player and match score perps/app/ui";
+const UI_DIR = process.env.UI_DIR ?? process.env.HOME + "/Player and match score perps/app/ui";
 const FIXTURES_JSON = `${UI_DIR}/fixtures.json`;
 const COMPETITIONS = [72, 430]; // devnet: 72 = World Cup samples, 430 = Friendlies
 const COMP_NAMES: Record<number, string> = { 72: "World Cup", 430: "Friendlies" };

@@ -5,6 +5,7 @@ node_modules/
 # Secrets — NEVER commit
 app/keeper/.keys/
 *-keypair.json
+txline-auth.json
 
 # Misc
 .DS_Store

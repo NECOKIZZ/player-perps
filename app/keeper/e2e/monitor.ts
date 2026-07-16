@@ -29,7 +29,7 @@ import { settle, distanceA, DEFAULT_DIST_PARAMS, DEFAULT_PAYOUT_PARAMS } from ".
 import * as fs from "fs";
 
 const AUTH_CACHE = "/tmp/txline-auth.json";
-const FIXTURES_JSON = process.env.HOME + "/Player and match score perps/app/ui/fixtures.json";
+const FIXTURES_JSON = process.env.FIXTURES_JSON ?? process.env.HOME + "/Player and match score perps/app/ui/fixtures.json";
 const DAY_MS = 86_400_000;
 const POLL_MS = Number(process.env.POLL_MS ?? 60_000);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

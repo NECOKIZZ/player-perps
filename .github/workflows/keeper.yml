@@ -1,0 +1,87 @@
+name: keeper
+# Runs the listing agent + settlement monitor against devnet, then commits any
+# fixtures.json changes. A Vercel git-integration deploy picks the change up
+# automatically, so the live UI stays in sync with the chain.
+
+on:
+  schedule:
+    - cron: "7,17,27,37,47,57 * * * *" # every 10 min (off the :00 spike)
+  workflow_dispatch: {} # manual "Run workflow" button
+
+concurrency:
+  group: keeper
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  keeper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ANCHOR_PROVIDER_URL: https://api.devnet.solana.com
+      TOKEN_MINT_ADDRESS: 4Zao8ocPhmMgq7PdsYWyxvqySMGx7xb9cMftPMkEokRG
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # TxLine auth tokens survive between runs so we don't re-subscribe every pass
+      - name: Restore txline auth cache
+        uses: actions/cache@v4
+        with:
+          path: txline-auth.json
+          key: txline-auth-${{ github.run_id }}
+          restore-keys: txline-auth-
+
+      - name: Set up tx-on-chain workbench
+        run: |
+          git clone --depth 1 https://github.com/txodds/tx-on-chain /tmp/tx-on-chain
+          cd /tmp/tx-on-chain
+          npm install --no-audit --no-fund
+          npm install --no-audit --no-fund tsx bn.js
+          cp "$GITHUB_WORKSPACE"/app/keeper/e2e/*.ts examples/devnet/
+          cp "$GITHUB_WORKSPACE"/app/keeper/e2e/player_perps.idl.json examples/devnet/
+          cp "$GITHUB_WORKSPACE"/app/keeper/src/engine.ts examples/devnet/
+          [ -f "$GITHUB_WORKSPACE/txline-auth.json" ] && cp "$GITHUB_WORKSPACE/txline-auth.json" /tmp/txline-auth.json || true
+
+      - name: Write keeper wallet
+        run: |
+          umask 077
+          printf '%s' "$KEEPER_DEVNET_KEY" > /tmp/keeper-devnet.json
+        env:
+          KEEPER_DEVNET_KEY: ${{ secrets.KEEPER_DEVNET_KEY }}
+
+      - name: Lister pass (discover + initialize new markets)
+        working-directory: /tmp/tx-on-chain
+        run: npx tsx examples/devnet/lister.ts
+        env:
+          ANCHOR_WALLET: /tmp/keeper-devnet.json
+          UI_DIR: ${{ github.workspace }}/app/ui
+        continue-on-error: true # a feed hiccup on discovery must not block settlement
+
+      - name: Monitor pass (lock / validate / settle / void)
+        working-directory: /tmp/tx-on-chain
+        run: npx tsx examples/devnet/monitor.ts
+        env:
+          ANCHOR_WALLET: /tmp/keeper-devnet.json
+          FIXTURES_JSON: ${{ github.workspace }}/app/ui/fixtures.json
+
+      - name: Save txline auth cache
+        run: cp /tmp/txline-auth.json "$GITHUB_WORKSPACE/txline-auth.json" || true
+
+      - name: Commit registry updates
+        run: |
+          git config user.name "pp-keeper[bot]"
+          git config user.email "pp-keeper@users.noreply.github.com"
+          git add app/ui/fixtures.json
+          if git diff --cached --quiet; then
+            echo "no registry changes"
+          else
+            git commit -m "keeper: registry update $(date -u +%Y-%m-%dT%H:%MZ)"
+            git pull --rebase origin main
+            git push
+          fi
