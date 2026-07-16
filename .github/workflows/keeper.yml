@@ -65,10 +65,17 @@ jobs:
 
       - name: Monitor pass (lock / validate / settle / void)
         working-directory: /tmp/tx-on-chain
-        run: npx tsx examples/devnet/monitor.ts
+        # Poll every 45s for ~8.5 min so cron gaps don't add latency: effective
+        # settle lag ≈ 1 min. timeout exit 124 = loop ended normally, not a failure.
+        run: |
+          timeout 510 npx tsx examples/devnet/monitor.ts; ec=$?
+          [ $ec -eq 124 ] && ec=0
+          exit $ec
         env:
           ANCHOR_WALLET: /tmp/keeper-devnet.json
           FIXTURES_JSON: ${{ github.workspace }}/app/ui/fixtures.json
+          LOOP: "1"
+          POLL_MS: "45000"
 
       - name: Save txline auth cache
         run: cp /tmp/txline-auth.json "$GITHUB_WORKSPACE/txline-auth.json" || true
