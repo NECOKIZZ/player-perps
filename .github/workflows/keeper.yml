@@ -67,9 +67,12 @@ jobs:
         working-directory: /tmp/tx-on-chain
         # Poll every 45s for ~8.5 min so cron gaps don't add latency: effective
         # settle lag ≈ 1 min. timeout exit 124 = loop ended normally, not a failure.
+        # NOTE: `|| ec=$?` (not `; ec=$?`) — Actions runs bash -e, which aborts on
+        # the bare failing command before ec is ever read.
         run: |
-          timeout 510 npx tsx examples/devnet/monitor.ts; ec=$?
-          [ $ec -eq 124 ] && ec=0
+          ec=0
+          timeout 510 npx tsx examples/devnet/monitor.ts || ec=$?
+          if [ "$ec" -eq 124 ]; then ec=0; fi
           exit $ec
         env:
           ANCHOR_WALLET: /tmp/keeper-devnet.json
