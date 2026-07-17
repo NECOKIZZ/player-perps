@@ -29,6 +29,8 @@
   .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px;}
   .hero-art{position:relative;}
   .hero-art .ph{min-height:340px;}
+  .hero-shot{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;border-radius:var(--radius-lg);display:block;border:1px solid var(--line);}
+  .banner-shot{width:100%;aspect-ratio:16/7;object-fit:cover;object-position:50% 42%;border-radius:var(--radius-lg);display:block;border:1px solid var(--line);}
   .hero-art .float-stat{
     position:absolute;left:-14px;bottom:26px;background:var(--surface);
     border:1px solid var(--line-2);border-radius:14px;padding:14px 18px;
@@ -89,11 +91,7 @@
   </div>
 
   <div class="hero-art reveal">
-    <!-- IMAGE: img/hero-stadium.jpg — 1600×2000 (4:5), floodlit night stadium / crowd -->
-    <div class="ph hero-img">
-      <span class="ph-tag">HERO</span>
-      <span class="ph-cap">img/hero-stadium.jpg · 1600×2000</span>
-    </div>
+    <img class="hero-shot" src="img/hero.png" alt="Footballer in a green kit reading lock in" width="1122" height="1402">
     <div class="float-stat">
       <div class="k">Settled on-chain</div>
       <div class="v">2<span class="u">–</span>1</div>
@@ -191,11 +189,7 @@
 
   <!-- ============ BANNER ============ -->
   <section class="section reveal">
-    <!-- IMAGE: img/banner-celebration.jpg — 2000×620 (16:5), wide goal celebration / crowd -->
-    <div class="ph banner">
-      <span class="ph-tag">BANNER</span>
-      <span class="ph-cap">img/banner-celebration.jpg · 2000×620</span>
-    </div>
+    <img class="banner-shot" src="img/banner.png" alt="Floodlit stadium packed with fans on matchday" width="1739" height="904">
   </section>
 
 </main>
