@@ -13,6 +13,12 @@
   .page{padding:34px 0 100px;}
   .empty{font-family:var(--mono);font-size:13px;color:var(--loss);padding:22px;border:1px solid var(--loss-dim);border-radius:14px;background:var(--loss-dim);}
 
+  /* ---- crest logos (drop img/crest/<team-slug>.png; monogram shows until then) ---- */
+  .crest{overflow:hidden;position:relative;}
+  .crest .crest-logo{width:100%;height:100%;object-fit:contain;padding:7px;}
+  .crest.noimg::after{content:attr(data-code);font-family:var(--display);}
+  .crest.lg .crest-logo{padding:9px;}
+
   /* ---- badges the engine toggles (win / lose / neutral) ---- */
   .badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
     padding:5px 11px;border-radius:20px;text-transform:uppercase;border:1px solid var(--line-2);color:var(--muted);background:var(--surface-2);}
@@ -379,8 +385,14 @@ function getProvider(){
 async function connectWallet(){
   const provider = getProvider();
   if (!provider){
-    toast("No Solana wallet found — install Phantom or Solflare, then reload.");
-    window.open("https://phantom.app/", "_blank");
+    // Mobile browsers don't inject a wallet. Re-open THIS page inside Phantom's in-app
+    // browser (which injects the provider), instead of dumping the user on phantom.app.
+    const isMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||'');
+    if(isMobile){
+      window.location.href='https://phantom.app/ul/browse/'+encodeURIComponent(window.location.href)+'?ref='+encodeURIComponent(window.location.origin);
+      return;
+    }
+    toast("No Solana wallet detected. Install the Phantom or Solflare extension, unlock it, then reload.");
     return;
   }
   try{
@@ -515,11 +527,25 @@ function onStakeChange(){
   render(false);
 }
 
-/* ---- markets from the listing agent (fixtures.json), fallback = config.js demo fixture ---- */
-let MARKET = C.FIXTURE_PDA ? { fixtureId:C.FIXTURE_ID, pda:C.FIXTURE_PDA, escrow:C.ESCROW,
-  home:"MEX", away:"USA", competition:"Devnet demo market", lockTime:C.LOCK_TIME } : null;
+/* ---- markets come from the listing agent (fixtures.json) ---- */
+let MARKET = null;
 
 const code = s => (s||'?').replace(/[^A-Za-z0-9]/g,'').slice(0,3).toUpperCase() || '?';
+const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+// crest: try img/crest/<slug>.png, fall back to a monogram if the logo isn't there yet
+function crestImg(name,extra){
+  return `<span class="crest ${extra||''}" data-code="${code(name)}"><img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" loading="lazy" onerror="this.closest('.crest').classList.add('noimg');this.remove();"></span>`;
+}
+function setCrest(el,name){
+  if(!el) return;
+  el.setAttribute('data-code',code(name)); el.classList.remove('noimg');
+  el.innerHTML=`<img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" onerror="this.closest('.crest').classList.add('noimg');this.remove();">`;
+}
+// a market is "demo/sample" if it's devnet test data, not a real fixture
+const isDemoMarket = m =>
+  /devnet|demo|sample|monitor|test/i.test(m.competition||'') ||
+  (Number(m.homeId)===0 && Number(m.awayId)===0);
+const stateRank = m => ({live:0,open:1,settled:2,void:3}[marketStateOf(m).cls] ?? 4);
 function marketStateOf(m){
   const s = m.state || 'Open';
   if(s==='Settled') return {cls:'settled', label:'Settled'};
@@ -547,9 +573,9 @@ function marketCardHTML(m,i){
       <span class="pill ${st.cls}"><span class="dot"></span>${st.label}</span>
     </div>
     <div class="match-teams">
-      <div class="match-side"><span class="crest">${code(m.home)}</span><span class="tname">${(m.home||'Home')}</span></div>
+      <div class="match-side">${crestImg(m.home)}<span class="tname">${(m.home||'Home')}</span></div>
       <div class="match-score${settled&&hasScore?'':' tbd'}">${scoreHTML}</div>
-      <div class="match-side away"><span class="crest">${code(m.away)}</span><span class="tname">${(m.away||'Away')}</span></div>
+      <div class="match-side away">${crestImg(m.away)}<span class="tname">${(m.away||'Away')}</span></div>
     </div>
     <div class="match-foot"><span>Pool $${pool.toFixed(pool>=100?0:2)}</span><span class="countdown">${foot}</span></div>
   </div>`;
@@ -559,17 +585,26 @@ let CARD_MARKETS=[];
 async function loadMarkets(){
   let markets=[];
   try{ const r=await fetch("fixtures.json",{cache:"no-store"}); if(r.ok) markets=(await r.json()).markets??[]; }catch(_){}
-  const list=document.getElementById('marketList');
-  const chips=[...markets, ...(C.FIXTURE_PDA?[{fixtureId:C.FIXTURE_ID,pda:C.FIXTURE_PDA,escrow:C.ESCROW,home:"Mexico",away:"United States",competition:"Devnet demo market",lockTime:C.LOCK_TIME,state:"Open"}]:[])];
-  CARD_MARKETS=chips;
-  if(!chips.length){ list.innerHTML='<div class="empty">No markets listed yet — run listing-agent.ts to open one.</div>'; return; }
-  list.innerHTML=chips.map((m,i)=>marketCardHTML(m,i)).join('');
+  const list=document.getElementById('marketList'), detail=document.getElementById('detail');
+  markets=markets.filter(m=>!isDemoMarket(m));           // real fixtures only — no demo/sample
+  markets.sort((a,b)=>{                                   // live → upcoming(soonest) → finished(recent)
+    const r=stateRank(a)-stateRank(b); if(r) return r;
+    const ka=a.kickoff||(a.lockTime||0)*1000, kb=b.kickoff||(b.lockTime||0)*1000;
+    return stateRank(a)<=1 ? ka-kb : kb-ka;
+  });
+  CARD_MARKETS=markets;
+  if(!markets.length){
+    list.innerHTML='<div class="empty">No live markets yet — the listing agent opens a market automatically as soon as a fixture goes live on the feed.</div>';
+    detail.style.display='none'; return;
+  }
+  detail.style.display='';
+  list.innerHTML=markets.map((m,i)=>marketCardHTML(m,i)).join('');
   const cards=list.querySelectorAll('.match');
-  cards.forEach(el=>el.onclick=()=>selectMarket(chips[Number(el.dataset.i)],el,true));
+  cards.forEach(el=>el.onclick=()=>selectMarket(markets[Number(el.dataset.i)],el,true));
   updateCardTimers();
-  // open on the first stakeable market so the detail lands interactive, not on a Void
-  const di=Math.max(0,chips.findIndex(m=>marketStateOf(m).cls==='open'));
-  selectMarket(chips[di], cards[di], false);
+  // open on the first live/stakeable market
+  const di=Math.max(0,markets.findIndex(m=>['live','open'].includes(marketStateOf(m).cls)));
+  selectMarket(markets[di], cards[di], false);
 }
 function updateCardTimers(){
   const now=Math.floor(Date.now()/1000);
@@ -592,8 +627,8 @@ function selectMarket(m,el,scroll){
   document.querySelectorAll('.team-mini .tname')[1].textContent=m.away.slice(0,16);
   document.querySelectorAll('.picker-team')[0].textContent=code(m.home);
   document.querySelectorAll('.picker-team')[1].textContent=code(m.away);
-  document.querySelector('.crest-h').textContent=code(m.home);
-  document.querySelector('.crest-a').textContent=code(m.away);
+  setCrest(document.querySelector('.crest-h'), m.home);
+  setCrest(document.querySelector('.crest-a'), m.away);
   // reset per-market UI state
   locked=false; history=[]; goals=[]; homeLive=0; awayLive=0; minute=0;
   const btn2=document.getElementById('lockBtn'); btn2.disabled=false; btn2.textContent='Lock in';
