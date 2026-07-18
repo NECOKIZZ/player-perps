@@ -32,7 +32,7 @@
   .hero-shot{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;border-radius:var(--radius-lg);display:block;border:1px solid var(--line);}
   .banner-shot{width:100%;height:auto;aspect-ratio:16/7;object-fit:cover;object-position:50% 42%;border-radius:var(--radius-lg);display:block;border:1px solid var(--line);}
   .hero-art .float-stat{
-    position:absolute;left:-14px;bottom:26px;background:var(--surface);
+    position:absolute;left:-14px;bottom:26px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,0) 50%),var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.09);
     border:1px solid var(--line-2);border-radius:14px;padding:14px 18px;
   }
   .hero-art .float-stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
@@ -43,7 +43,8 @@
   /* ---------- how it works ---------- */
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   @media(max-width:820px){.steps{grid-template-columns:1fr;}}
-  .step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:30px 28px;}
+  .step{background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,0) 40%),var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);padding:30px 28px;transition:transform .22s ease,border-color .22s ease;}
+  .step:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.22);}
   .step .n{font-family:var(--display);font-size:22px;color:var(--accent);letter-spacing:.06em;}
   .step h3{font-family:var(--sans);font-weight:600;font-size:21px;margin:20px 0 10px;letter-spacing:-.01em;}
   .step p{color:var(--muted);font-size:15.5px;line-height:1.55;margin:0;}
@@ -51,7 +52,8 @@
   /* ---------- proof statement + country cards ---------- */
   .proof-band{
     display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,56px);align-items:center;
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+    background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,0) 42%),var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
     padding:clamp(30px,5vw,52px);
   }
   @media(max-width:820px){.proof-band{grid-template-columns:1fr;}}
@@ -64,14 +66,13 @@
   @media(max-width:520px){.nation-grid{grid-template-columns:repeat(3,1fr);gap:10px;}}
   .nation{
     display:flex;flex-direction:column;align-items:center;gap:10px;
-    background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:18px 10px 14px;
+    background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,0) 40%),var(--bg-2);
+    border:1px solid var(--line);border-radius:14px;padding:18px 10px 14px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    transition:transform .22s ease,border-color .22s ease;
   }
-  .nation .flag-ph{
-    width:56px;height:56px;border-radius:12px;border:1px dashed var(--line-2);
-    background:var(--surface-2);display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:8px;letter-spacing:.06em;color:var(--muted-2);overflow:hidden;
-  }
-  .nation .flag-ph img{width:100%;height:100%;object-fit:contain;padding:6px;}
+  .nation:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.25);}
+  .nation .flag-cut{width:58px;height:44px;}
   .nation .ncode{font-family:var(--display);font-size:19px;letter-spacing:.08em;color:var(--text);}
 
   /* section title block */
@@ -104,7 +105,7 @@
     </div>
   </div>
 
-  <div class="hero-art reveal">
+  <div class="hero-art reveal from-right">
     <img class="hero-shot" src="img/hero.jpg" alt="Footballer in a green kit reading lock in" width="1000" height="1250">
     <div class="float-stat">
       <div class="k">Settled on-chain</div>
@@ -115,9 +116,14 @@
 
 <main class="container">
 
+  <!-- ============ FLAG MARQUEE ============ -->
+  <section style="padding-top:clamp(40px,6vw,64px);" class="reveal">
+    <div class="flag-marquee" id="flagMarquee" aria-hidden="true"></div>
+  </section>
+
   <!-- ============ HOW IT WORKS ============ -->
   <section class="section" id="how">
-    <div class="section-head reveal">
+    <div class="section-head reveal from-left">
       <span class="eyebrow"><span class="tick">/</span> How it works</span>
       <h2 class="section-title">THREE STEPS,<br>ONE FINAL WHISTLE.</h2>
     </div>
@@ -142,7 +148,7 @@
 
   <!-- ============ MARKETS PREVIEW ============ -->
   <section class="section" id="markets">
-    <div class="head-row reveal">
+    <div class="head-row reveal from-left">
       <div>
         <span class="eyebrow"><span class="tick">/</span> Live markets</span>
         <h2 class="section-title">WORLD CUP 2026</h2>
@@ -157,9 +163,9 @@
           <span class="pill live"><span class="dot"></span>Live · 62'</span>
         </div>
         <div class="match-teams">
-          <div class="match-side"><span class="crest">MEX</span><span class="tname">Mexico</span></div>
+          <div class="match-side"><span class="flag-cut" style="width:46px;height:35px;"><img src="img/flag/mex.svg" alt="MEX"></span><span class="tname">Mexico</span></div>
           <div class="match-score">1<span class="sep">–</span>0</div>
-          <div class="match-side away"><span class="crest">USA</span><span class="tname">United States</span></div>
+          <div class="match-side away"><span class="flag-cut" style="width:46px;height:35px;"><img src="img/flag/usa.svg" alt="USA"></span><span class="tname">United States</span></div>
         </div>
         <div class="match-foot"><span>Pool $2,140</span><span class="countdown">locks at kick-off</span></div>
       </a>
@@ -170,9 +176,9 @@
           <span class="pill open"><span class="dot"></span>Open</span>
         </div>
         <div class="match-teams">
-          <div class="match-side"><span class="crest">BRA</span><span class="tname">Brazil</span></div>
+          <div class="match-side"><span class="flag-cut" style="width:46px;height:35px;"><img src="img/flag/bra.svg" alt="BRA"></span><span class="tname">Brazil</span></div>
           <div class="match-score tbd">vs</div>
-          <div class="match-side away"><span class="crest">GER</span><span class="tname">Germany</span></div>
+          <div class="match-side away"><span class="flag-cut" style="width:46px;height:35px;"><img src="img/flag/ger.svg" alt="GER"></span><span class="tname">Germany</span></div>
         </div>
         <div class="match-foot"><span>Pool $860</span><span class="countdown">locks in <b data-countdown="+18h">18h 04m</b></span></div>
       </a>
@@ -183,9 +189,9 @@
           <span class="pill settled"><span class="dot"></span>Settled</span>
         </div>
         <div class="match-teams">
-          <div class="match-side"><span class="crest">ARG</span><span class="tname">Argentina</span></div>
+          <div class="match-side"><span class="flag-cut" style="width:46px;height:35px;"><img src="img/flag/arg.svg" alt="ARG"></span><span class="tname">Argentina</span></div>
           <div class="match-score">1<span class="sep">–</span>2</div>
-          <div class="match-side away"><span class="crest">FRA</span><span class="tname">France</span></div>
+          <div class="match-side away"><span class="flag-cut" style="width:46px;height:35px;"><img src="img/flag/fra.svg" alt="FRA"></span><span class="tname">France</span></div>
         </div>
         <div class="match-foot"><span>Proven on-chain</span><span class="countdown">final</span></div>
       </a>
@@ -200,14 +206,14 @@
         <div class="big">NO REFEREE TO BRIBE. THE SCORE IS <em>PROVEN BY MATH.</em></div>
         <p>Settlement runs against TxLine's Merkle-proven score feed. The program verifies the final scoreline cryptographically before a single cent moves — a wrong score is rejected on-chain, not just against the rules.</p>
       </div>
-      <!-- country logo placeholders — drop img/flag/<code>.png (bra.png, arg.png, …) -->
+      <!-- flags in the signature diagonal cut — img/flag/<code>.svg (flag-icons, vendored) -->
       <div class="nation-grid">
-        <div class="nation"><span class="flag-ph"><img src="img/flag/bra.png" alt="" onerror="this.replaceWith('LOGO')"></span><span class="ncode">BRA</span></div>
-        <div class="nation"><span class="flag-ph"><img src="img/flag/arg.png" alt="" onerror="this.replaceWith('LOGO')"></span><span class="ncode">ARG</span></div>
-        <div class="nation"><span class="flag-ph"><img src="img/flag/fra.png" alt="" onerror="this.replaceWith('LOGO')"></span><span class="ncode">FRA</span></div>
-        <div class="nation"><span class="flag-ph"><img src="img/flag/eng.png" alt="" onerror="this.replaceWith('LOGO')"></span><span class="ncode">ENG</span></div>
-        <div class="nation"><span class="flag-ph"><img src="img/flag/esp.png" alt="" onerror="this.replaceWith('LOGO')"></span><span class="ncode">ESP</span></div>
-        <div class="nation"><span class="flag-ph"><img src="img/flag/ger.png" alt="" onerror="this.replaceWith('LOGO')"></span><span class="ncode">GER</span></div>
+        <div class="nation reveal zoom"><span class="flag-cut"><img src="img/flag/bra.svg" alt="Brazil"></span><span class="ncode">BRA</span></div>
+        <div class="nation reveal zoom"><span class="flag-cut"><img src="img/flag/arg.svg" alt="Argentina"></span><span class="ncode">ARG</span></div>
+        <div class="nation reveal zoom"><span class="flag-cut"><img src="img/flag/fra.svg" alt="France"></span><span class="ncode">FRA</span></div>
+        <div class="nation reveal zoom"><span class="flag-cut"><img src="img/flag/eng.svg" alt="England"></span><span class="ncode">ENG</span></div>
+        <div class="nation reveal zoom"><span class="flag-cut"><img src="img/flag/esp.svg" alt="Spain"></span><span class="ncode">ESP</span></div>
+        <div class="nation reveal zoom"><span class="flag-cut"><img src="img/flag/ger.svg" alt="Germany"></span><span class="ncode">GER</span></div>
       </div>
     </div>
   </section>
@@ -253,7 +259,13 @@
   /* scroll reveal (progressive enhancement) */
   document.documentElement.classList.add('has-js');
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3*70)+'ms';io.observe(el);});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3*80)+'ms';io.observe(el);});
+
+  /* flag marquee — the 12 nations, doubled for a seamless loop */
+  const NATIONS=['bra','arg','fra','eng','esp','ger','por','ned','ita','mex','usa','jpn'];
+  const item=c=>`<div class="flag-item"><span class="flag-cut"><img src="img/flag/${c}.svg" alt="" loading="lazy"></span><span class="fcode">${c.toUpperCase()}</span></div>`;
+  document.getElementById('flagMarquee').innerHTML=
+    `<div class="flag-track">${NATIONS.map(item).join('')+NATIONS.map(item).join('')}</div>`;
 </script>
 </body>
 </html>

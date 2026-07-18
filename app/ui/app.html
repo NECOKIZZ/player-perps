@@ -114,7 +114,7 @@ const FIFA={spain:'ESP',argentina:'ARG',france:'FRA',england:'ENG',germany:'GER'
 const code = s => FIFA[(s||'').trim().toLowerCase()] ?? ((s||'?').replace(/[^A-Za-z0-9]/g,'').slice(0,3).toUpperCase() || '?');
 const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
 function crestImg(name,extra){
-  return `<span class="crest ${extra||''}" data-code="${code(name)}"><img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" loading="lazy" onerror="this.closest('.crest').classList.add('noimg');this.remove();"></span>`;
+  return `<span class="crest ${extra||''}" data-code="${code(name)}"><img class="crest-logo" src="img/crest/${slug(name)}.svg" alt="" loading="lazy" onerror="if(!this.dataset.p){this.dataset.p=1;this.src='img/crest/${slug(name)}.png';}else{this.closest('.crest').classList.add('noimg');this.remove();}"></span>`;
 }
 const isDemoMarket = m =>
   /devnet|demo|sample|monitor|test/i.test(m.competition||'') ||

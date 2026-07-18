@@ -22,7 +22,7 @@
   /* ---- badges the engine toggles (win / lose / neutral) ---- */
   .badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
     padding:5px 11px;border-radius:20px;text-transform:uppercase;border:1px solid var(--line-2);color:var(--muted);background:var(--surface-2);}
-  .badge.win{color:var(--accent);border-color:var(--accent-line);background:var(--accent-dim);}
+  .badge.win{color:var(--accent);border-color:var(--line-2);background:var(--surface-2);}
   .badge.lose{color:var(--loss);border-color:var(--loss-dim);background:var(--loss-dim);}
   .badge.neutral{color:var(--muted);}
 
@@ -35,7 +35,7 @@
 
   /* ---- scoreboard strip (signature) ---- */
   .scoreboard{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+    background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);border-radius:var(--radius-lg);
     padding:22px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px;
   }
   .team-mini{display:flex;flex-direction:column;align-items:center;gap:9px;width:96px;}
@@ -49,7 +49,7 @@
   .section-label{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:22px 0 12px;}
 
   /* ---- picker ---- */
-  .stake-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;}
+  .stake-card{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);border-radius:var(--radius-lg);padding:24px;}
   .picker-row{display:flex;align-items:center;justify-content:center;gap:28px;}
   .picker-col{display:flex;flex-direction:column;align-items:center;gap:12px;}
   .picker-team{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
@@ -84,7 +84,7 @@
   .lb th{font-size:10px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);}
   .lb td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--muted);}
   .lb tr:last-child td{border-bottom:none;}
-  .lb tr.you td{color:var(--text);background:var(--accent-dim);}
+  .lb tr.you td{color:var(--text);background:rgba(255,255,255,.05);}
   .lb .pos-ind{color:var(--accent);} .lb .neg-ind{color:var(--loss);}
 
   .demo-controls{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
@@ -93,7 +93,7 @@
   .demo-btn:hover{color:var(--text);border-color:var(--muted);}
 
   /* ---- chart ---- */
-  .graph-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 20px 12px;position:relative;overflow:hidden;}
+  .graph-card{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);border-radius:var(--radius-lg);padding:22px 20px 16px;position:relative;overflow:hidden;}
   .graph-card.flash-win::before,.graph-card.flash-lose::before{content:'';position:absolute;inset:0;pointer-events:none;animation:flash-fade .7s ease-out;}
   .graph-card.flash-win::before{background:var(--accent-dim);}
   .graph-card.flash-lose::before{background:var(--loss-dim);}
@@ -125,7 +125,7 @@
   /* ---- stat cards ---- */
   .card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
   @media(max-width:520px){.card-row{grid-template-columns:1fr;}}
-  .pnl-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .pnl-card{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);border-radius:14px;padding:16px;}
   .pnl-card .k{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
   .pnl-card .v{font-family:var(--display);font-size:30px;line-height:1;}
   .pnl-card .v.pos{color:var(--accent);} .pnl-card .v.neg{color:var(--loss);}
@@ -133,7 +133,7 @@
 
   /* ---- proof (bottom) ---- */
   #proofPanel{margin-top:22px;}
-  .proof-inner{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;font-family:var(--mono);font-size:12px;}
+  .proof-inner{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);border-radius:var(--radius-lg);padding:22px 24px;font-family:var(--mono);font-size:12px;}
   .proof-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
   .proof-head .t{font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:.01em;color:var(--text);}
   #proofRows{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;color:var(--muted);word-break:break-all;}
@@ -220,12 +220,12 @@
           <div class="stake-block">
             <div class="stake-head">
               <span class="lab">Stake</span>
-              <span class="amt">$<span id="stakeVal">50</span><span class="u">USDC</span></span>
+              <span class="amt">$<span id="stakeVal">50</span><span class="u" style="margin-left:8px;"><span class="usdc-ico" title="USDC"><img src="img/usdc.png" alt="USDC" onerror="this.replaceWith('$')"></span></span></span>
             </div>
             <input type="range" id="stakeInput" min="1" max="500" step="1" value="50" oninput="onStakeChange()">
             <div class="slider-scale"><span>$1</span><span>$250</span><span>$500</span></div>
             <button class="btn block" id="lockBtn" onclick="lockGuess()" style="margin-top:20px;">LOCKIN</button>
-            <div class="lock-note">Funds held by the fixture PDA until proven settlement. Escrow: USDC (SPL).</div>
+            <div class="lock-note">Funds held by the fixture PDA until proven settlement. Escrow: <span class="usdc-ico" title="USDC"><img src="img/usdc.png" alt="USDC" onerror="this.replaceWith('$')"></span> USDC (SPL).</div>
           </div>
         </div>
 
@@ -236,12 +236,6 @@
             <thead><tr><th>Staker</th><th>Guess</th><th>Stake</th><th>D</th><th>Now pays</th></tr></thead>
             <tbody id="lbBody"></tbody>
           </table>
-          </div>
-          <div class="demo-controls">
-            <span class="tag">Devnet demo — drives the feed until the live stream is wired</span>
-            <button class="demo-btn" id="demoHomeBtn" onclick="simulateGoal('home')">Home goal</button>
-            <button class="demo-btn" id="demoAwayBtn" onclick="simulateGoal('away')">Away goal</button>
-            <button class="demo-btn" onclick="advanceClock()">+5 min</button>
           </div>
         </div>
       </div>
@@ -282,6 +276,13 @@
             <thead><tr><th>Minute</th><th>Score</th><th>Payout</th><th>PnL</th></tr></thead>
             <tbody id="pnlTableBody"></tbody>
           </table>
+          <!-- match simulator lives WITH the graph so both fit one demo frame -->
+          <div class="demo-controls">
+            <span class="tag">Match simulator — drives the feed until the live stream is wired</span>
+            <button class="demo-btn" id="demoHomeBtn" onclick="simulateGoal('home')">Home goal</button>
+            <button class="demo-btn" id="demoAwayBtn" onclick="simulateGoal('away')">Away goal</button>
+            <button class="demo-btn" onclick="advanceClock()">+5 min</button>
+          </div>
         </div>
 
         <div class="card-row">
@@ -523,12 +524,12 @@ const code = s => FIFA[(s||'').trim().toLowerCase()] ?? ((s||'?').replace(/[^A-Z
 const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
 // crest: try img/crest/<slug>.png, fall back to a monogram if the logo isn't there yet
 function crestImg(name,extra){
-  return `<span class="crest ${extra||''}" data-code="${code(name)}"><img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" loading="lazy" onerror="this.closest('.crest').classList.add('noimg');this.remove();"></span>`;
+  return `<span class="crest ${extra||''}" data-code="${code(name)}"><img class="crest-logo" src="img/crest/${slug(name)}.svg" alt="" loading="lazy" onerror="if(!this.dataset.p){this.dataset.p=1;this.src='img/crest/${slug(name)}.png';}else{this.closest('.crest').classList.add('noimg');this.remove();}"></span>`;
 }
 function setCrest(el,name){
   if(!el) return;
   el.setAttribute('data-code',code(name)); el.classList.remove('noimg');
-  el.innerHTML=`<img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" onerror="this.closest('.crest').classList.add('noimg');this.remove();">`;
+  el.innerHTML=`<img class="crest-logo" src="img/crest/${slug(name)}.svg" alt="" onerror="if(!this.dataset.p){this.dataset.p=1;this.src='img/crest/${slug(name)}.png';}else{this.closest('.crest').classList.add('noimg');this.remove();}">`;
 }
 // a market is "demo/sample" if it's devnet test data, not a real fixture
 const isDemoMarket = m =>

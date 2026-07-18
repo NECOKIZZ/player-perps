@@ -110,9 +110,11 @@ h1,h2,h3{margin:0;}
 .section-head{max-width:640px;margin-bottom:44px;}
 .section-head p{color:var(--muted);font-size:16.5px;margin:16px 0 0;}
 
-/* ---------- generic card ---------- */
+/* ---------- generic card (flat glass: edge-light, no glow) ---------- */
 .card{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset -1px 0 0 rgba(255,255,255,.02);
   padding:26px;transition:border-color .18s ease,transform .18s ease;
 }
 
@@ -130,25 +132,37 @@ h1,h2,h3{margin:0;}
 .ph.hero-img{aspect-ratio:4/5;width:100%;}
 .ph.banner{aspect-ratio:16/5;width:100%;}
 
-/* team crest placeholder — clean monogram, no emoji */
+/* team crest — flag clipped with diagonally-opposed rounded corners (the signature cut) */
 .crest{
   display:inline-flex;align-items:center;justify-content:center;
-  width:46px;height:46px;border-radius:11px;border:1px solid var(--line-2);
-  background:var(--surface-2);font-family:var(--display);font-size:19px;
+  width:46px;height:46px;border-radius:18px 6px 18px 6px;border:1px solid var(--line-2);
+  background:linear-gradient(150deg,rgba(255,255,255,.06),rgba(255,255,255,0) 45%),var(--surface-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  font-family:var(--display);font-size:19px;
   letter-spacing:.02em;color:var(--text);flex-shrink:0;
 }
-.crest.lg{width:60px;height:60px;font-size:25px;border-radius:14px;}
+.crest.lg{width:60px;height:60px;font-size:25px;border-radius:24px 8px 24px 8px;}
+
+/* the flag itself fills the cut container edge-to-edge */
+.crest .crest-logo,.flag-cut img{width:100%;height:100%;object-fit:cover;}
+.flag-cut{
+  display:inline-block;overflow:hidden;flex-shrink:0;
+  border-radius:18px 6px 18px 6px;border:1px solid var(--line-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+}
 
 /* ---------- match card ---------- */
 .match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
 @media(max-width:820px){.match-grid{grid-template-columns:1fr;}}
 
 .match{
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,0) 38%),var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
   padding:22px;cursor:pointer;display:flex;flex-direction:column;gap:18px;
   transition:border-color .18s ease,transform .18s ease,background .18s ease;
 }
-.match:hover{border-color:var(--line-2);transform:translateY(-3px);}
+.match:hover{border-color:rgba(255,255,255,.28);transform:translateY(-3px);}
 .match.is-selected{border-color:var(--accent-line);background:var(--bg-2);}
 .match-top{display:flex;align-items:center;justify-content:space-between;}
 .match-comp{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
@@ -172,9 +186,9 @@ h1,h2,h3{margin:0;}
   padding:5px 11px;border-radius:20px;border:1px solid var(--line-2);color:var(--muted);background:var(--surface-2);
 }
 .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--muted);}
-.pill.live{color:var(--accent);border-color:var(--accent-line);background:var(--accent-dim);}
+.pill.live{color:var(--accent);border-color:var(--line-2);background:var(--surface-2);}
 .pill.live .dot{background:var(--accent);animation:blink 1.5s ease-in-out infinite;}
-.pill.open{color:var(--accent);border-color:var(--accent-line);background:var(--accent-dim);}
+.pill.open{color:var(--accent);border-color:var(--line-2);background:var(--surface-2);}
 .pill.open .dot{background:var(--accent);}
 .pill.settled{color:var(--muted);}
 .pill.settled .dot{background:var(--muted-2);}
@@ -191,7 +205,7 @@ h1,h2,h3{margin:0;}
 .footer .logo{font-size:21px;}
 .footer .net-pill{
   font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--accent);
-  background:var(--accent-dim);border:1px solid var(--accent-line);padding:5px 12px;border-radius:20px;text-transform:uppercase;
+  background:var(--surface-2);border:1px solid var(--line-2);padding:5px 12px;border-radius:20px;text-transform:uppercase;
 }
 .chain-refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
 .chain-ref{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
@@ -201,9 +215,32 @@ h1,h2,h3{margin:0;}
 .footer-legal{margin-top:30px;font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.04em;}
 
 /* ---------- scroll reveal (progressive enhancement: visible without JS) ---------- */
-.reveal{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);}
-html.has-js .reveal{opacity:0;transform:translateY(18px);}
+.reveal{transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);}
+html.has-js .reveal{opacity:0;transform:translateY(22px);}
 html.has-js .reveal.in{opacity:1;transform:none;}
+/* variants for a livelier landing page */
+html.has-js .reveal.from-left{transform:translateX(-26px);}
+html.has-js .reveal.from-right{transform:translateX(26px);}
+html.has-js .reveal.zoom{transform:scale(.96);}
+html.has-js .reveal.in{transform:none;}
+
+/* ---------- flag marquee (landing page) ---------- */
+.flag-marquee{overflow:hidden;position:relative;padding:6px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
+.flag-track{display:flex;gap:34px;width:max-content;animation:marquee 36s linear infinite;}
+.flag-marquee:hover .flag-track{animation-play-state:paused;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.flag-item{display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0;}
+.flag-item .flag-cut{width:64px;height:48px;transition:transform .25s ease;}
+.flag-item:hover .flag-cut{transform:translateY(-4px) rotate(-2deg);}
+.flag-item .fcode{font-family:var(--display);font-size:15px;letter-spacing:.1em;color:var(--muted);}
+
+/* ---------- USDC logo (usdc.png swaps in; $ shows until uploaded) ---------- */
+.usdc-ico{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;
+  width:1.05em;height:1.05em;border-radius:50%;overflow:hidden;background:var(--surface-2);
+  font-family:var(--mono);font-size:.72em;color:var(--muted);}
+.usdc-ico img{width:100%;height:100%;object-fit:contain;}
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;scroll-behavior:auto!important;}
