@@ -11,132 +11,21 @@
 <link rel="stylesheet" href="style.css">
 <style>
   .page{padding:34px 0 100px;}
-  .empty{font-family:var(--mono);font-size:13px;color:var(--loss);padding:22px;border:1px solid var(--loss-dim);border-radius:14px;background:var(--loss-dim);}
+  .empty{font-family:var(--mono);font-size:13px;color:var(--muted);padding:22px;border:1px solid var(--line-2);border-radius:14px;background:var(--surface);}
 
   /* ---- crest logos (drop img/crest/<team-slug>.png; monogram shows until then) ---- */
   .crest{overflow:hidden;position:relative;}
   .crest .crest-logo{width:100%;height:100%;object-fit:contain;padding:7px;}
   .crest.noimg::after{content:attr(data-code);font-family:var(--display);}
-  .crest.lg .crest-logo{padding:9px;}
 
-  /* ---- badges the engine toggles (win / lose / neutral) ---- */
   .badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
     padding:5px 11px;border-radius:20px;text-transform:uppercase;border:1px solid var(--line-2);color:var(--muted);background:var(--surface-2);}
-  .badge.win{color:var(--accent);border-color:var(--accent-line);background:var(--accent-dim);}
-  .badge.lose{color:var(--loss);border-color:var(--loss-dim);background:var(--loss-dim);}
   .badge.neutral{color:var(--muted);}
 
-  /* ---- detail ---- */
-  #detail{margin-top:var(--gap-section);scroll-margin-top:84px;}
-  .mode-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
-  .mode-row .comp{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
-  .app-grid{display:grid;grid-template-columns:minmax(0,460px) 1fr;gap:22px;align-items:start;}
-  @media(max-width:940px){.app-grid{grid-template-columns:1fr;}}
-
-  /* ---- scoreboard strip (signature) ---- */
-  .scoreboard{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);
-    padding:22px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px;
-  }
-  .team-mini{display:flex;flex-direction:column;align-items:center;gap:9px;width:96px;}
-  .team-mini .tname{font-family:var(--sans);font-weight:600;font-size:13px;color:var(--text);text-align:center;line-height:1.15;}
-  .board{text-align:center;}
-  .live-score{font-family:var(--display);font-size:56px;line-height:.9;letter-spacing:.03em;}
-  .clock{font-family:var(--mono);font-size:12px;color:var(--accent);display:block;margin-top:4px;letter-spacing:.06em;}
-  .board-line{display:flex;gap:16px;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px;}
-  .board-line span b{color:var(--text);font-weight:500;}
-
-  .section-label{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:22px 0 12px;}
-
-  /* ---- picker ---- */
-  .stake-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;}
-  .picker-row{display:flex;align-items:center;justify-content:center;gap:28px;}
-  .picker-col{display:flex;flex-direction:column;align-items:center;gap:12px;}
-  .picker-team{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
-  .glide-btn{
-    width:46px;height:38px;border-radius:10px;border:1px solid var(--line-2);cursor:pointer;
-    background:var(--surface-2);color:var(--text);font-family:var(--display);font-size:18px;line-height:1;
-    display:flex;align-items:center;justify-content:center;transition:border-color .14s,background .14s,color .14s;
-  }
-  .glide-btn:hover{border-color:var(--accent-line);color:var(--accent);}
-  .glide-btn:active{background:var(--accent-dim);}
-  .digit-shell{width:74px;height:92px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line-2);
-    display:flex;align-items:center;justify-content:center;overflow:hidden;}
-  .digit{font-family:var(--display);font-size:66px;line-height:1;transition:transform .18s cubic-bezier(.2,.9,.3,1),opacity .18s;}
-  .digit.rolling{transform:translateY(-16px);opacity:0;}
-  .dash-sep{font-family:var(--display);font-size:44px;color:var(--muted-2);padding-bottom:8px;}
-
-  /* ---- stake slider ---- */
-  .stake-block{margin-top:24px;}
-  .stake-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;}
-  .stake-head .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
-  .stake-head .amt{font-family:var(--display);font-size:38px;line-height:1;}
-  .stake-head .amt .u{font-family:var(--mono);font-size:12px;color:var(--accent);vertical-align:middle;margin-left:6px;letter-spacing:.05em;}
-  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:20px;background:var(--surface-2);outline:none;border:1px solid var(--line);}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--bg);}
-  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--bg);}
-  input[type=range]:disabled{opacity:.5;}
-  .slider-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted-2);margin-top:8px;}
-  .lock-note{margin-top:14px;font-family:var(--mono);font-size:10.5px;color:var(--muted-2);line-height:1.5;}
-
-  /* ---- leaderboard ---- */
-  .lb{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px;}
-  .lb th{font-size:10px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);}
-  .lb td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--muted);}
-  .lb tr:last-child td{border-bottom:none;}
-  .lb tr.you td{color:var(--text);background:var(--accent-dim);}
-  .lb .pos-ind{color:var(--accent);} .lb .neg-ind{color:var(--loss);}
-
-  .demo-controls{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-  .demo-controls .tag{font-family:var(--mono);font-size:10px;color:var(--muted-2);width:100%;margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em;}
-  .demo-btn{font-family:var(--mono);font-size:11px;padding:9px 14px;border-radius:9px;background:var(--surface-2);color:var(--muted);border:1px solid var(--line-2);cursor:pointer;transition:color .14s,border-color .14s;}
-  .demo-btn:hover{color:var(--text);border-color:var(--muted);}
-
-  /* ---- chart ---- */
-  .graph-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 20px 12px;position:relative;overflow:hidden;}
-  .graph-card.flash-win::before,.graph-card.flash-lose::before{content:'';position:absolute;inset:0;pointer-events:none;animation:flash-fade .7s ease-out;}
-  .graph-card.flash-win::before{background:var(--accent-dim);}
-  .graph-card.flash-lose::before{background:var(--loss-dim);}
-  @keyframes flash-fade{from{opacity:.7;}to{opacity:0;}}
-  .graph-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
-  .graph-head .label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
-  .graph-head .value{font-family:var(--display);font-size:36px;line-height:1;}
-  .value.pos{color:var(--accent);} .value.neg{color:var(--loss);}
-  svg{display:block;width:100%;height:auto;}
-  .breakeven-line{stroke:var(--muted-2);stroke-width:1;stroke-dasharray:3 4;}
-  .pnl-area{opacity:.5;}
-  .pnl-line{fill:none;stroke-width:2.5;}
-  .goal-marker{stroke:var(--text);stroke-width:1;stroke-dasharray:2 3;opacity:.4;}
-  .goal-label{font-family:var(--mono);font-size:9px;fill:var(--muted);}
-  .axis-label{font-family:var(--mono);font-size:9px;fill:var(--muted-2);}
-  .crosshair{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 2;opacity:0;}
-  .hover-dot{fill:var(--text);stroke:var(--bg);stroke-width:2;r:4;opacity:0;}
-  .chart-tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .1s;background:var(--surface-2);border:1px solid var(--line-2);
-    border-radius:9px;padding:7px 11px;font-family:var(--mono);font-size:11px;color:var(--text);white-space:nowrap;z-index:5;}
-  .chart-tip .t-min{color:var(--muted);}
-  .chart-actions{display:flex;justify-content:flex-end;margin-top:4px;}
-  .link-btn{background:none;border:none;color:var(--muted-2);font-family:var(--mono);font-size:10.5px;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;}
-  .link-btn:hover{color:var(--muted);}
-  .pnl-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px;margin-top:8px;display:none;}
-  .pnl-table th,.pnl-table td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--line);color:var(--muted);}
-  .pnl-table th{color:var(--muted-2);text-transform:uppercase;font-size:10px;letter-spacing:.06em;}
-  .pnl-table td:first-child,.pnl-table th:first-child{text-align:left;}
-
-  /* ---- stat cards ---- */
-  .card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
-  @media(max-width:520px){.card-row{grid-template-columns:1fr;}}
-  .pnl-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;}
-  .pnl-card .k{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
-  .pnl-card .v{font-family:var(--display);font-size:30px;line-height:1;}
-  .pnl-card .v.pos{color:var(--accent);} .pnl-card .v.neg{color:var(--loss);}
-  .pnl-card .sub{font-size:10.5px;color:var(--muted-2);margin-top:6px;font-family:var(--mono);}
-
-  /* ---- proof (bottom) ---- */
-  #proofPanel{margin-top:22px;}
-  .proof-inner{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;font-family:var(--mono);font-size:12px;}
-  .proof-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
-  .proof-head .t{font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:.01em;color:var(--text);}
-  #proofRows{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;color:var(--muted);word-break:break-all;}
+  /* group headers between card sections */
+  .group-label{font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:38px 0 14px;}
+  .group-label:first-of-type{margin-top:0;}
+  .group-label .n{color:var(--accent);}
 
   /* ---- wallet + toast ---- */
   .wallet-chip{display:inline-flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:11px;padding:9px 14px;font-family:var(--mono);font-size:12px;color:var(--text);}
@@ -146,24 +35,13 @@
     border-radius:12px;padding:13px 20px;font-family:var(--mono);font-size:12px;color:var(--text);opacity:0;pointer-events:none;
     transition:opacity .2s,transform .2s;z-index:100;max-width:90vw;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  /* ---- small screens: keep everything inside the viewport ---- */
-  @media(max-width:520px){
-    .match{padding:18px;}
-    .match-teams{gap:10px;}
-    .match-score{min-width:50px;font-size:30px;}
-    .match-side .tname{font-size:14px;}
-    .lb{font-size:11px;} .lb th,.lb td{padding:7px 6px;}
-    .lb-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-    .digit-shell{width:64px;height:80px;} .digit{font-size:56px;}
-  }
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <div class="container nav-inner">
-    <a href="index.html" class="logo">LOCK&nbsp;IN<span class="bang">!!!</span></a>
+    <a href="index.html" class="logo"><span class="logo-mark"><img src="img/logo.png" alt="" onerror="this.replaceWith('LOGO')"></span>LOCK&nbsp;IN<span class="bang">!!!</span></a>
     <div class="nav-links">
       <span id="walletArea">
         <button class="btn ghost sm" id="connectBtn" onclick="connectWallet()">Connect wallet</button>
@@ -174,8 +52,7 @@
 
 <div class="container page">
 
-  <!-- ============ MARKET LIST ============ -->
-  <div class="head-row" style="margin-bottom:26px;">
+  <div class="head-row" style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:26px;flex-wrap:wrap;">
     <div>
       <span class="eyebrow"><span class="tick">/</span> Markets</span>
       <h1 class="section-title" style="margin-top:10px;">PICK A MATCH</h1>
@@ -183,199 +60,18 @@
     <span class="badge neutral" id="listNet">Solana · Devnet</span>
   </div>
 
-  <div class="match-grid" id="marketList">
+  <div id="marketGroups">
     <div class="empty">Loading markets…</div>
   </div>
-
-  <!-- ============ DETAIL (opens when a match is chosen) ============ -->
-  <section id="detail">
-    <div class="mode-row">
-      <span class="comp" id="compLabel">World Cup 2026</span>
-      <span class="badge neutral" id="marketStatus">● reading chain…</span>
-    </div>
-
-    <div class="app-grid">
-
-      <!-- LEFT: scoreboard + your position -->
-      <div>
-        <div class="scoreboard">
-          <div class="team-mini"><span class="crest crest-h">MEX</span><span class="tname">Mexico</span></div>
-          <div class="board">
-            <div class="live-score" id="liveScoreDisplay">1 – 0</div>
-            <span class="clock" id="clockDisplay">62'</span>
-          </div>
-          <div class="team-mini"><span class="crest crest-a">USA</span><span class="tname">United States</span></div>
-        </div>
-        <div class="board-line">
-          <span id="marketLock">lock: —</span>
-          <span id="marketEscrow">escrow: —</span>
-        </div>
-
-        <div class="section-label">Your guess — full-time score</div>
-        <div class="stake-card">
-          <div class="picker-row">
-            <div class="picker-col">
-              <span class="picker-team">MEX</span>
-              <button class="glide-btn" onclick="adjust('home',1)" aria-label="home up">+</button>
-              <div class="digit-shell"><span class="digit" id="homeDigit">2</span></div>
-              <button class="glide-btn" onclick="adjust('home',-1)" aria-label="home down">–</button>
-            </div>
-            <div class="dash-sep">–</div>
-            <div class="picker-col">
-              <span class="picker-team">USA</span>
-              <button class="glide-btn" onclick="adjust('away',1)" aria-label="away up">+</button>
-              <div class="digit-shell"><span class="digit" id="awayDigit">1</span></div>
-              <button class="glide-btn" onclick="adjust('away',-1)" aria-label="away down">–</button>
-            </div>
-          </div>
-
-          <div class="stake-block">
-            <div class="stake-head">
-              <span class="lab">Stake</span>
-              <span class="amt">$<span id="stakeVal">50</span><span class="u">USDC</span></span>
-            </div>
-            <input type="range" id="stakeInput" min="1" max="500" step="1" value="50" oninput="onStakeChange()">
-            <div class="slider-scale"><span>$1</span><span>$250</span><span>$500</span></div>
-            <button class="btn block" id="lockBtn" onclick="lockGuess()" style="margin-top:20px;">Lock in</button>
-            <div class="lock-note">Funds held by the fixture PDA until proven settlement. Escrow: USDC (SPL).</div>
-          </div>
-        </div>
-
-        <div class="section-label" id="poolLabel">Pool — 5 positions</div>
-        <div class="card" style="padding:6px 10px;">
-          <div class="lb-wrap">
-          <table class="lb" id="lbTable">
-            <thead><tr><th>Staker</th><th>Guess</th><th>Stake</th><th>D</th><th>Now pays</th></tr></thead>
-            <tbody id="lbBody"></tbody>
-          </table>
-          </div>
-          <div class="demo-controls">
-            <span class="tag">Devnet demo — drives the feed until the live stream is wired</span>
-            <button class="demo-btn" id="demoHomeBtn" onclick="simulateGoal('home')">Home goal</button>
-            <button class="demo-btn" id="demoAwayBtn" onclick="simulateGoal('away')">Away goal</button>
-            <button class="demo-btn" onclick="advanceClock()">+5 min</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT: live PnL -->
-      <div>
-        <div class="section-label" style="margin-top:0;">Live PnL — if the match ended now</div>
-        <div class="graph-card" id="graphCard">
-          <div class="graph-head">
-            <span class="label">Projected payout</span>
-            <span class="value pos" id="graphValue">+$0.00</span>
-          </div>
-          <div style="position:relative;">
-            <svg viewBox="0 0 560 190" id="pnlSvg">
-              <defs>
-                <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#37E37E" stop-opacity="0.25"/>
-                  <stop offset="100%" stop-color="#37E37E" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <line class="breakeven-line" x1="0" y1="120" x2="560" y2="120"/>
-              <text x="4" y="116" class="axis-label">stake (breakeven)</text>
-              <g id="goalMarks"></g>
-              <path id="pnlArea" class="pnl-area" fill="url(#fillGrad)" d=""/>
-              <path id="pnlLine" class="pnl-line" stroke="#37E37E" d=""/>
-              <line id="crossV" class="crosshair" x1="0" y1="12" x2="0" y2="172"/>
-              <circle id="hoverDot" class="hover-dot" cx="0" cy="0"/>
-              <text x="4" y="186" class="axis-label">KO</text>
-              <text x="536" y="186" class="axis-label">FT</text>
-              <rect id="hitLayer" x="0" y="0" width="560" height="190" fill="transparent"/>
-            </svg>
-            <div class="chart-tip" id="chartTip"></div>
-          </div>
-          <div class="chart-actions">
-            <button class="link-btn" onclick="toggleTable()" id="tableToggle">View as table</button>
-          </div>
-          <table class="pnl-table" id="pnlTable">
-            <thead><tr><th>Minute</th><th>Score</th><th>Payout</th><th>PnL</th></tr></thead>
-            <tbody id="pnlTableBody"></tbody>
-          </table>
-        </div>
-
-        <div class="card-row">
-          <div class="pnl-card">
-            <div class="k">Your stake</div>
-            <div class="v" id="stakeCard">$50</div>
-            <div class="sub" id="guessCard">Guess 2–1</div>
-          </div>
-          <div class="pnl-card">
-            <div class="k">Live rank</div>
-            <div class="v pos" id="rankValue">—</div>
-            <div class="sub" id="rankSub">—</div>
-          </div>
-          <div class="pnl-card">
-            <div class="k">Unrealised PnL</div>
-            <div class="v" id="pnlCard">—</div>
-            <div class="sub">vs stake if FT now</div>
-          </div>
-        </div>
-
-        <div style="margin-top:14px;"><span class="badge neutral" id="statusBadge">● waiting for first render</span></div>
-      </div>
-    </div>
-
-    <!-- proof at the very bottom -->
-    <div id="proofPanel" style="display:none;">
-      <div class="proof-inner">
-        <div class="proof-head">
-          <span class="t">Settlement proof</span>
-          <span class="badge win">● Merkle-verified on-chain</span>
-        </div>
-        <div id="proofRows"></div>
-      </div>
-    </div>
-  </section>
 
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script src="web3.iife.min.js"></script>
 <script src="config.js"></script>
 <script>
-/* ================= wallet (connect wallet — no email/Google) ================= */
+/* ================= wallet (list page: connect persists via wallet trust) ================= */
 let walletPubkey = null;
-const C = window.PP_CONFIG || {};
-const W3 = window.solanaWeb3;
-const DEVNET_RPC = C.RPC || "https://api.devnet.solana.com";
-const conn = W3 ? new W3.Connection(DEVNET_RPC, "confirmed") : null;
-
-const TOKEN_PROGRAM = W3 && new W3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
-const ATA_PROGRAM   = W3 && new W3.PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
-
-function u64le(n){ const b=new Uint8Array(8); new DataView(b.buffer).setBigUint64(0,BigInt(n),true); return b; }
-function ataFor(owner,mint){
-  return W3.PublicKey.findProgramAddressSync(
-    [owner.toBytes(),TOKEN_PROGRAM.toBytes(),mint.toBytes()],ATA_PROGRAM)[0];
-}
-function ixCreateAtaIdempotent(payer,ata,owner,mint){
-  return new W3.TransactionInstruction({programId:ATA_PROGRAM,keys:[
-    {pubkey:payer,isSigner:true,isWritable:true},{pubkey:ata,isSigner:false,isWritable:true},
-    {pubkey:owner,isSigner:false,isWritable:false},{pubkey:mint,isSigner:false,isWritable:false},
-    {pubkey:W3.SystemProgram.programId,isSigner:false,isWritable:false},
-    {pubkey:TOKEN_PROGRAM,isSigner:false,isWritable:false}],data:new Uint8Array([1])});
-}
-function ixMintTo(mint,dest,authority,amount){
-  const data=new Uint8Array(9); data[0]=7; data.set(u64le(amount),1);
-  return new W3.TransactionInstruction({programId:TOKEN_PROGRAM,keys:[
-    {pubkey:mint,isSigner:false,isWritable:true},{pubkey:dest,isSigner:false,isWritable:true},
-    {pubkey:authority,isSigner:true,isWritable:false}],data});
-}
-function ixStake(staker,fixture,position,stakerUsdc,escrow,gh,ga,amount){
-  const data=new Uint8Array(18);
-  data.set([206,176,202,18,200,209,179,108],0); // anchor disc: global:stake
-  data[8]=gh; data[9]=ga; data.set(u64le(amount),10);
-  return new W3.TransactionInstruction({programId:new W3.PublicKey(C.PROGRAM_ID),keys:[
-    {pubkey:staker,isSigner:true,isWritable:true},{pubkey:fixture,isSigner:false,isWritable:true},
-    {pubkey:position,isSigner:false,isWritable:true},{pubkey:stakerUsdc,isSigner:false,isWritable:true},
-    {pubkey:escrow,isSigner:false,isWritable:true},{pubkey:TOKEN_PROGRAM,isSigner:false,isWritable:false},
-    {pubkey:W3.SystemProgram.programId,isSigner:false,isWritable:false}],data});
-}
-
 function getProvider(){
   if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
   if (window.solana?.isPhantom) return window.solana;
@@ -385,8 +81,6 @@ function getProvider(){
 async function connectWallet(){
   const provider = getProvider();
   if (!provider){
-    // Mobile browsers don't inject a wallet. Re-open THIS page inside Phantom's in-app
-    // browser (which injects the provider), instead of dumping the user on phantom.app.
     const isMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||'');
     if(isMobile){
       window.location.href='https://phantom.app/ul/browse/'+encodeURIComponent(window.location.href)+'?ref='+encodeURIComponent(window.location.origin);
@@ -400,39 +94,10 @@ async function connectWallet(){
     walletPubkey = (resp.publicKey ?? provider.publicKey).toString();
     renderWallet();
     toast("Wallet connected — devnet");
-    fetchSolBalance();
-    checkExistingPosition();
   }catch(e){ toast("Connection cancelled."); }
 }
-/* If this wallet already staked on the fixture, reflect it instead of offering a re-stake. */
-async function checkExistingPosition(){
-  if(!W3 || !C.PROGRAM_ID || !walletPubkey || !MARKET) return;
-  try{
-    const user=new W3.PublicKey(walletPubkey);
-    const [position]=W3.PublicKey.findProgramAddressSync(
-      [new TextEncoder().encode("stake"),u64le(MARKET.fixtureId),user.toBytes()],
-      new W3.PublicKey(C.PROGRAM_ID));
-    const acc=await conn.getAccountInfo(position);
-    if(!acc) return;
-    // StakePosition layout: disc(8) fixture(32) staker(32) gh(1) ga(1) stake u64(8)…
-    const d=acc.data;
-    homeGuess=d[72]; awayGuess=d[73];
-    yourStake=Number(new DataView(d.buffer,d.byteOffset+74,8).getBigUint64(0,true))/1e6;
-    locked=true;
-    document.getElementById('homeDigit').textContent=homeGuess;
-    document.getElementById('awayDigit').textContent=awayGuess;
-    document.getElementById('stakeInput').value=yourStake;
-    document.getElementById('stakeVal').textContent=yourStake;
-    document.getElementById('stakeInput').disabled=true;
-    const btn=document.getElementById('lockBtn');
-    btn.disabled=true; btn.textContent='Locked ✓';
-    toast(`Position found on-chain: ${homeGuess}–${awayGuess} for $${yourStake}`);
-    render(false);
-  }catch(_){}
-}
 function disconnectWallet(){
-  const provider = getProvider();
-  provider?.disconnect?.();
+  getProvider()?.disconnect?.();
   walletPubkey = null;
   document.getElementById('walletArea').innerHTML =
     '<button class="btn ghost sm" id="connectBtn" onclick="connectWallet()">Connect wallet</button>';
@@ -440,108 +105,17 @@ function disconnectWallet(){
 function renderWallet(){
   const short = walletPubkey.slice(0,4) + "…" + walletPubkey.slice(-4);
   document.getElementById('walletArea').innerHTML =
-    `<span class="wallet-chip"><span class="dot"></span>${short}<span id="solBal" style="color:var(--muted);"></span>
+    `<span class="wallet-chip"><span class="dot"></span>${short}
      <button title="Disconnect" onclick="disconnectWallet()">✕</button></span>`;
 }
-async function fetchSolBalance(){
-  try{
-    const r = await fetch(DEVNET_RPC, {method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({jsonrpc:"2.0",id:1,method:"getBalance",params:[walletPubkey]})});
-    const j = await r.json();
-    const sol = (j.result?.value ?? 0)/1e9;
-    const el = document.getElementById('solBal');
-    if (el) el.textContent = " · " + sol.toFixed(2) + " SOL";
-  }catch(_){}
-}
 
-/* ================= engine (faithful float port of engine.ts) ================= */
-const P=4.0, WGD=1.0, WTG=0.5, WCS=0.25, CAPGD=3, CAPTG=4;   // DistParams
-const GAMMA=6, TAKE_BPS=2000, CAP_MULTIPLE=5;                 // PayoutParams
-const sign = gd => gd>0?1:gd<0?-1:0;
-
-function distanceA(gh,ga,ah,aa){
-  const gdG=gh-ga, gdA=ah-aa, tgG=gh+ga, tgA=ah+aa;
-  const correct = sign(gdG)===sign(gdA)?1:0;
-  const dGD=Math.min(Math.abs(gdG-gdA),CAPGD);
-  const dTG=Math.min(Math.abs(tgG-tgA),CAPTG);
-  const cs=(Math.abs((ga===0)-(aa===0))+Math.abs((gh===0)-(ah===0)));
-  return (1-correct)*P + WGD*dGD + WTG*dTG + WCS*cs;
-}
-/* Trepa settle: median gate, coalition mode, accuracy weights, cap water-fill. */
-function settle(pos){
-  const n=pos.length, total=pos.reduce((s,p)=>s+p.stake,0);
-  const out=pos.map(p=>({isWinner:false,a:0,gain:0,payout:p.stake}));
-  if (n<=1) return {void:'FewerThanTwo',outcomes:out,medianD:0};
-  const ds=[...pos.map(p=>p.d)].sort((a,b)=>a-b);
-  if (Math.abs(ds[0]-ds[n-1])<1e-9) return {void:'AllEqualD',outcomes:out,medianD:0};
-  const minD=ds[0], countAtMin=pos.filter(p=>Math.abs(p.d-minD)<1e-9).length;
-  const coalition=countAtMin*2>=n;
-  const medianD=ds[Math.floor((n+1)/2)-1];
-  pos.forEach((p,i)=>{ out[i].isWinner = coalition ? Math.abs(p.d-minD)<1e-9 : p.d<medianD-1e-9; });
-  pos.forEach((p,i)=>{ if(out[i].isWinner){ const r=medianD===0?0:p.d/medianD; out[i].a=Math.pow(1/(1+r),GAMMA);} });
-  const losers=pos.reduce((s,p,i)=>s+(out[i].isWinner?0:p.stake),0);
-  let remaining=losers*(10000-TAKE_BPS)/10000;
-  const winners=out.map((o,i)=>o.isWinner?i:-1).filter(i=>i>=0);
-  const capped=new Array(n).fill(false);
-  for(let round=0;round<10;round++){
-    const un=winners.filter(i=>!capped[i]);
-    const sumA=un.reduce((s,i)=>s+out[i].a,0);
-    if(!un.length||sumA===0){break;}
-    const alpha=remaining/sumA; let any=false;
-    for(const i of un){ const naive=alpha*out[i].a, cap=pos[i].stake*CAP_MULTIPLE;
-      if(naive>cap){ out[i].gain=cap; capped[i]=true; remaining-=cap; any=true; } }
-    if(!any){ for(const i of un) out[i].gain=alpha*out[i].a; remaining=0; break; }
-  }
-  pos.forEach((p,i)=>{ out[i].payout = out[i].isWinner ? p.stake+out[i].gain : 0; });
-  return {void:null,outcomes:out,medianD};
-}
-
-/* ================= match state ================= */
-let homeGuess=2, awayGuess=1, yourStake=50, locked=false;
-let homeLive=1, awayLive=0, minute=62;
-const field=[ // the §7 reference pool (matches the proven on-chain e2e)
-  {name:'C',gh:3,ga:1,stake:40},
-  {name:'B',gh:2,ga:0,stake:30},
-  {name:'D',gh:1,ga:1,stake:20},
-  {name:'E',gh:1,ga:2,stake:60},
-];
-let history=[], goals=[];
-
-function adjust(side,dir){
-  if(locked) return;
-  if(side==='home') homeGuess=Math.max(0,Math.min(9,homeGuess+dir));
-  else awayGuess=Math.max(0,Math.min(9,awayGuess+dir));
-  rollDigit(side==='home'?'homeDigit':'awayDigit', side==='home'?homeGuess:awayGuess);
-  render(false);
-}
-function rollDigit(id,val){
-  const el=document.getElementById(id);
-  el.classList.add('rolling');
-  setTimeout(()=>{el.textContent=val;el.classList.remove('rolling');},160);
-}
-function onStakeChange(){
-  if(locked) return;
-  yourStake=Math.max(1,Math.min(10000,Number(document.getElementById('stakeInput').value)||50));
-  document.getElementById('stakeInput').value=yourStake;
-  document.getElementById('stakeVal').textContent=yourStake;
-  render(false);
-}
-
-/* ---- markets come from the listing agent (fixtures.json) ---- */
-let MARKET = null;
-
-const code = s => (s||'?').replace(/[^A-Za-z0-9]/g,'').slice(0,3).toUpperCase() || '?';
+/* ================= market list ================= */
+const FIFA={spain:'ESP',argentina:'ARG',france:'FRA',england:'ENG',germany:'GER',brazil:'BRA',portugal:'POR',netherlands:'NED',croatia:'CRO',switzerland:'SUI',uruguay:'URU',japan:'JPN',morocco:'MAR',mexico:'MEX','united states':'USA',australia:'AUS',wales:'WAL',ireland:'IRL',denmark:'DEN',poland:'POL',senegal:'SEN',ghana:'GHA',cameroon:'CMR',serbia:'SRB',belgium:'BEL',canada:'CAN',ecuador:'ECU',qatar:'QAT','south korea':'KOR','saudi arabia':'KSA','costa rica':'CRC',tunisia:'TUN',iran:'IRN',vietnam:'VIE',myanmar:'MYA','new zealand':'NZL',india:'IND',liechtenstein:'LIE',gibraltar:'GIB',italy:'ITA',scotland:'SCO',austria:'AUT',norway:'NOR',sweden:'SWE',colombia:'COL',chile:'CHI',peru:'PER',nigeria:'NGA',egypt:'EGY',algeria:'ALG'};
+const code = s => FIFA[(s||'').trim().toLowerCase()] ?? ((s||'?').replace(/[^A-Za-z0-9]/g,'').slice(0,3).toUpperCase() || '?');
 const slug = s => (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-// crest: try img/crest/<slug>.png, fall back to a monogram if the logo isn't there yet
 function crestImg(name,extra){
   return `<span class="crest ${extra||''}" data-code="${code(name)}"><img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" loading="lazy" onerror="this.closest('.crest').classList.add('noimg');this.remove();"></span>`;
 }
-function setCrest(el,name){
-  if(!el) return;
-  el.setAttribute('data-code',code(name)); el.classList.remove('noimg');
-  el.innerHTML=`<img class="crest-logo" src="img/crest/${slug(name)}.png" alt="" onerror="this.closest('.crest').classList.add('noimg');this.remove();">`;
-}
-// a market is "demo/sample" if it's devnet test data, not a real fixture
 const isDemoMarket = m =>
   /devnet|demo|sample|monitor|test/i.test(m.competition||'') ||
   (Number(m.homeId)===0 && Number(m.awayId)===0);
@@ -554,7 +128,7 @@ function marketStateOf(m){
                     return {cls:'live',    label:'In play'};
   return {cls:'open', label:'Open'};
 }
-function marketCardHTML(m,i){
+function marketCardHTML(m){
   const st=marketStateOf(m);
   const settled = st.cls==='settled' || st.cls==='void';
   const hasScore = m.actualHome!==undefined && m.actualHome!==null;
@@ -567,7 +141,7 @@ function marketCardHTML(m,i){
   else if(st.cls==='void') foot = `void · 0 stakers`;
   else                     foot = `final · proven`;
   const pool = ((m.totalPool||0)/1e6);
-  return `<div class="match" data-i="${i}">
+  return `<a class="match" href="match.html?id=${m.fixtureId}">
     <div class="match-top">
       <span class="match-comp">${(m.competition||'Match')}</span>
       <span class="pill ${st.cls}"><span class="dot"></span>${st.label}</span>
@@ -578,37 +152,39 @@ function marketCardHTML(m,i){
       <div class="match-side away">${crestImg(m.away)}<span class="tname">${(m.away||'Away')}</span></div>
     </div>
     <div class="match-foot"><span>Pool $${pool.toFixed(pool>=100?0:2)}</span><span class="countdown">${foot}</span></div>
-  </div>`;
+  </a>`;
 }
 
-let CARD_MARKETS=[];
 async function loadMarkets(){
   let markets=[];
   try{ const r=await fetch("fixtures.json",{cache:"no-store"}); if(r.ok) markets=(await r.json()).markets??[]; }catch(_){}
-  const list=document.getElementById('marketList'), detail=document.getElementById('detail');
-  markets=markets.filter(m=>!isDemoMarket(m));           // real fixtures only — no demo/sample
-  markets.sort((a,b)=>{                                   // live → upcoming(soonest) → finished(recent)
+  const wrap=document.getElementById('marketGroups');
+  markets=markets.filter(m=>!isDemoMarket(m));
+  markets.sort((a,b)=>{
     const r=stateRank(a)-stateRank(b); if(r) return r;
     const ka=a.kickoff||(a.lockTime||0)*1000, kb=b.kickoff||(b.lockTime||0)*1000;
     return stateRank(a)<=1 ? ka-kb : kb-ka;
   });
-  CARD_MARKETS=markets;
   if(!markets.length){
-    list.innerHTML='<div class="empty">No live markets yet — the listing agent opens a market automatically as soon as a fixture goes live on the feed.</div>';
-    detail.style.display='none'; return;
+    wrap.innerHTML='<div class="empty">No live markets yet — the listing agent opens a market automatically as soon as a fixture goes live on the feed.</div>';
+    return;
   }
-  detail.style.display='';
-  list.innerHTML=markets.map((m,i)=>marketCardHTML(m,i)).join('');
-  const cards=list.querySelectorAll('.match');
-  cards.forEach(el=>el.onclick=()=>selectMarket(markets[Number(el.dataset.i)],el,true));
+  // group: available (live+open) vs closed (settled+void)
+  const avail=markets.filter(m=>stateRank(m)<=1);
+  const closed=markets.filter(m=>stateRank(m)>1);
+  let html='';
+  if(avail.length)
+    html+=`<div class="group-label"><span class="n">/</span> Available — stake now (${avail.length})</div>
+           <div class="match-grid">${avail.map(marketCardHTML).join('')}</div>`;
+  if(closed.length)
+    html+=`<div class="group-label"><span class="n">/</span> Closed — settled on-chain (${closed.length})</div>
+           <div class="match-grid">${closed.map(marketCardHTML).join('')}</div>`;
+  wrap.innerHTML=html;
   updateCardTimers();
-  // open on the first live/stakeable market
-  const di=Math.max(0,markets.findIndex(m=>['live','open'].includes(marketStateOf(m).cls)));
-  selectMarket(markets[di], cards[di], false);
 }
 function updateCardTimers(){
   const now=Math.floor(Date.now()/1000);
-  document.querySelectorAll('#marketList [data-lock]').forEach(el=>{
+  document.querySelectorAll('#marketGroups [data-lock]').forEach(el=>{
     const t=Number(el.dataset.lock); if(!t){el.textContent='—';return;}
     let s=t-now;
     if(s<=0){ el.textContent='locked'; return; }
@@ -617,295 +193,7 @@ function updateCardTimers(){
   });
 }
 setInterval(updateCardTimers,30_000);
-
-function selectMarket(m,el,scroll){
-  MARKET={...m};
-  document.querySelectorAll('#marketList .match').forEach(c=>c.classList.remove('is-selected'));
-  if(el) el.classList.add('is-selected');
-  document.getElementById('compLabel').textContent=(m.competition??'')+(m.kickoff?' · KO '+new Date(m.kickoff).toUTCString().slice(0,22):'');
-  document.querySelectorAll('.team-mini .tname')[0].textContent=m.home.slice(0,16);
-  document.querySelectorAll('.team-mini .tname')[1].textContent=m.away.slice(0,16);
-  document.querySelectorAll('.picker-team')[0].textContent=code(m.home);
-  document.querySelectorAll('.picker-team')[1].textContent=code(m.away);
-  setCrest(document.querySelector('.crest-h'), m.home);
-  setCrest(document.querySelector('.crest-a'), m.away);
-  // reset per-market UI state
-  locked=false; history=[]; goals=[]; homeLive=0; awayLive=0; minute=0;
-  const btn2=document.getElementById('lockBtn'); btn2.disabled=false; btn2.textContent='Lock in';
-  document.getElementById('stakeInput').disabled=false;
-  fixtureState=null; loadFixtureState();
-  renderProofPanel(m);
-  if(walletPubkey) checkExistingPosition();
-  render(true);
-  if(scroll) document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});
-}
 loadMarkets();
-
-/* ---- settlement-proof panel: the trustless chain of custody for the score ---- */
-const EXPLORER=(sig)=>`https://explorer.solana.com/tx/${sig}?cluster=devnet`;
-const EXPLORER_ACC=(a)=>`https://explorer.solana.com/address/${a}?cluster=devnet`;
-function renderProofPanel(m){
-  const panel=document.getElementById('proofPanel'), rows=document.getElementById('proofRows');
-  if(!m.validateSig){ panel.style.display='none'; return; }
-  const link=(href,txt)=>`<a href="${href}" target="_blank" rel="noopener" style="color:var(--accent);">${txt}</a>`;
-  const r=[];
-  if(m.actualHome!==undefined) r.push(['final score', `${m.home} ${m.actualHome} – ${m.actualAway} ${m.away}`]);
-  if(m.proofSeq) r.push(['feed record', `game_finalised · seq ${m.proofSeq} · statKeys 1,2 (total goals, period 100)`]);
-  r.push(['score proof tx', link(EXPLORER(m.validateSig), m.validateSig.slice(0,20)+'… ↗')+' <span style="color:var(--muted);">validate_score → CPI validate_stat_v3 → returns 1</span>']);
-  if(m.settleSig) r.push([m.state==='Void'?'void tx':'settlement tx', link(EXPLORER(m.settleSig), m.settleSig.slice(0,20)+'… ↗')+' <span style="color:var(--muted);">'+(m.state==='Void'?'0/1 stakers → refunds':'median-gate + conservation re-checked on-chain')+'</span>']);
-  r.push(['market account', link(EXPLORER_ACC(m.pda), m.pda.slice(0,20)+'… ↗')]);
-  rows.innerHTML=r.map(([k,v])=>`<span style="color:var(--muted);white-space:nowrap;">${k}</span><span style="color:var(--text);">${v}</span>`).join('');
-  panel.style.display='block';
-}
-
-const FIXTURE_STATUS = ['Open','Locked','ScoreValidated','DistancesComputed','MedianVerified','Settled','Void'];
-let fixtureState = null; // {status, lockTime, totalPool, stakerCount}
-let marketOpen = false;
-
-async function loadFixtureState(){
-  const ms=document.getElementById('marketStatus');
-  if(!W3 || !MARKET){
-    ms.className='badge lose'; ms.textContent='● config.js missing — run setup-ui-fixture.ts';
-    document.getElementById('lockBtn').disabled=true;
-    return;
-  }
-  try{
-    const acc=await conn.getAccountInfo(new W3.PublicKey(MARKET.pda));
-    if(!acc){ ms.className='badge lose'; ms.textContent='● fixture not found on-chain'; document.getElementById('lockBtn').disabled=true; return; }
-    // Fixture layout (verified vs live account): disc(8) id u64 lock_time i64 status u8
-    // dist(34) payout(14) home u8@73 away u8@74 pool u64@75 stakers u16@83
-    const d=acc.data, dv=new DataView(d.buffer,d.byteOffset);
-    fixtureState={
-      lockTime:Number(dv.getBigInt64(16,true)),
-      status:FIXTURE_STATUS[d[24]]??('?'+d[24]),
-      totalPool:Number(dv.getBigUint64(75,true))/1e6,
-      stakerCount:dv.getUint16(83,true),
-    };
-    const now=Math.floor(Date.now()/1000);
-    marketOpen = fixtureState.status==='Open' && now<fixtureState.lockTime;
-    ms.className='badge '+(marketOpen?'win':'neutral');
-    ms.textContent='● '+(marketOpen?'OPEN for staking':fixtureState.status.toUpperCase());
-    updateLockCountdown();
-    document.getElementById('marketEscrow').textContent='escrow: $'+fixtureState.totalPool.toFixed(2)+' · '+fixtureState.stakerCount+' staked';
-    document.getElementById('poolLabel').textContent=`Pool — live demo of ${field.length+1} positions · on-chain: ${fixtureState.stakerCount} / $${fixtureState.totalPool.toFixed(0)}`;
-    if(!marketOpen && !locked){
-      document.getElementById('lockBtn').disabled=true;
-      document.getElementById('lockBtn').textContent='Market '+fixtureState.status;
-    }
-  }catch(e){
-    ms.className='badge lose'; ms.textContent='● RPC unreachable — retrying';
-    setTimeout(loadFixtureState,8000);
-  }
-}
-function updateLockCountdown(){
-  if(!fixtureState) return;
-  const s=fixtureState.lockTime-Math.floor(Date.now()/1000);
-  const el=document.getElementById('marketLock');
-  if(s<=0){ el.textContent='lock: passed';
-    if(marketOpen){ marketOpen=false; if(!locked){ document.getElementById('lockBtn').disabled=true; document.getElementById('lockBtn').textContent='Market locked'; } }
-    return; }
-  const dd=Math.floor(s/86400), hh=Math.floor(s%86400/3600), mm=Math.floor(s%3600/60);
-  el.textContent='locks in '+(dd?dd+'d ':'')+hh+'h '+mm+'m';
-}
-setInterval(updateLockCountdown,30_000);
-setInterval(loadFixtureState,120_000); // refresh pool/escrow from chain
-loadFixtureState();
-
-async function lockGuess(){
-  if(!walletPubkey){ toast("Connect a wallet first — the stake is a signed USDC transfer."); return; }
-  if(!W3 || !C.PROGRAM_ID){ toast("web3/config not loaded — serve over http and keep config.js next to this page."); return; }
-  if(!marketOpen){ toast("Market is not open for staking ("+(fixtureState?.status??'unknown')+")."); return; }
-  const btn=document.getElementById('lockBtn');
-  btn.disabled=true; btn.textContent='Signing…';
-  try{
-    const provider=getProvider();
-    const user=new W3.PublicKey(walletPubkey);
-    const mint=new W3.PublicKey(C.USDC_MINT);
-    const fixture=new W3.PublicKey(MARKET.pda);
-    const escrow=new W3.PublicKey(MARKET.escrow);
-    // Faucet co-signer mints the demo USDC being staked. DEVNET ONLY — see config.js.
-    const faucet=W3.Keypair.fromSecretKey(new Uint8Array(C.FAUCET_SECRET));
-    const amount=BigInt(yourStake)*1000000n;
-    const [position]=W3.PublicKey.findProgramAddressSync(
-      [new TextEncoder().encode("stake"),u64le(MARKET.fixtureId),user.toBytes()],
-      new W3.PublicKey(C.PROGRAM_ID));
-
-    // guard: one position per wallet per fixture
-    if(await conn.getAccountInfo(position)){
-      toast("This wallet already has a locked position on this fixture.");
-      btn.textContent='Already locked'; return;
-    }
-
-    const userAta=ataFor(user,mint);
-    const tx=new W3.Transaction().add(
-      ixCreateAtaIdempotent(user,userAta,user,mint),
-      ixMintTo(mint,userAta,faucet.publicKey,amount),   // demo faucet: mints your stake
-      ixStake(user,fixture,position,userAta,escrow,homeGuess,awayGuess,amount),
-    );
-    tx.feePayer=user;
-    tx.recentBlockhash=(await conn.getLatestBlockhash("confirmed")).blockhash;
-    tx.partialSign(faucet);
-
-    btn.textContent='Approve in wallet…';
-    const signed=await provider.signTransaction(tx);
-    btn.textContent='Confirming…';
-    const sig=await conn.sendRawTransaction(signed.serialize());
-    await conn.confirmTransaction(sig,"confirmed");
-
-    locked=true;
-    btn.textContent='Locked ✓';
-    document.getElementById('stakeInput').disabled=true;
-    toast(`On-chain ✓ ${homeGuess}–${awayGuess} for $${yourStake} — tx ${sig.slice(0,8)}…`);
-    console.log("stake tx:",sig,"position:",position.toBase58());
-    render(false);
-  }catch(e){
-    console.error(e);
-    btn.disabled=false; btn.textContent='Lock in';
-    const msg=(e?.message||'').includes('User rejected')?'Signature declined.':
-      'Stake failed: '+(e?.message??e).toString().slice(0,90);
-    toast(msg);
-  }
-}
-
-function computeState(){
-  const all=[{name:'YOU',gh:homeGuess,ga:awayGuess,stake:yourStake},...field]
-    .map(t=>({...t,d:distanceA(t.gh,t.ga,homeLive,awayLive)}));
-  const res=settle(all);
-  const idx=all.findIndex(t=>t.name==='YOU');
-  const rank=[...all].sort((a,b)=>a.d-b.d).findIndex(t=>t.name==='YOU')+1;
-  return {all,res,you:all[idx],youOut:res.outcomes[idx],rank,N:all.length};
-}
-
-/* ================= render ================= */
-function render(push=true){
-  const st=computeState();
-  const payout=st.youOut.payout, pnl=payout-yourStake, winning=st.youOut.isWinner;
-
-  const gv=document.getElementById('graphValue');
-  gv.textContent=(payout>=yourStake?'+':'')+'$'+payout.toFixed(2);
-  gv.className='value '+(payout>=yourStake?'pos':'neg');
-
-  document.getElementById('stakeCard').textContent='$'+yourStake.toFixed(0);
-  document.getElementById('guessCard').textContent='Guess '+homeGuess+'–'+awayGuess+(locked?' · locked':'');
-  document.getElementById('rankValue').textContent=st.rank+' of '+st.N;
-  document.getElementById('rankValue').className='v '+(winning?'pos':'neg');
-  document.getElementById('rankSub').textContent='D = '+st.you.d.toFixed(2)+' · median '+st.res.medianD.toFixed(2);
-  const pc=document.getElementById('pnlCard');
-  pc.textContent=(pnl>=0?'+':'−')+'$'+Math.abs(pnl).toFixed(2);
-  pc.className='v '+(pnl>=0?'pos':'neg');
-
-  const badge=document.getElementById('statusBadge');
-  if(st.res.void){ badge.className='badge neutral'; badge.textContent='● round void — all stakes refunded'; }
-  else if(winning){ badge.className='badge win'; badge.textContent='● projected winner — below the median gate'; }
-  else{ badge.className='badge lose'; badge.textContent='● projected loser — outside the median gate'; }
-
-  document.getElementById('liveScoreDisplay').textContent=homeLive+' – '+awayLive;
-  document.getElementById('clockDisplay').textContent=minute+"'";
-
-  // leaderboard
-  const lb=document.getElementById('lbBody');
-  const rows=st.all.map((t,i)=>({t,o:st.res.outcomes[i]})).sort((a,b)=>a.t.d-b.t.d);
-  lb.innerHTML=rows.map(({t,o})=>
-    `<tr class="${t.name==='YOU'?'you':''}">
-      <td>${t.name==='YOU'?'YOU':'anon·'+t.name}</td>
-      <td>${t.gh}–${t.ga}</td>
-      <td>$${t.stake.toFixed(0)}</td>
-      <td>${t.d.toFixed(2)}</td>
-      <td class="${o.isWinner?'pos-ind':'neg-ind'}">${o.isWinner?'$'+o.payout.toFixed(2):'$0.00'}</td>
-    </tr>`).join('');
-
-  if(push){
-    if(history.length===0) history.push({minute:Math.max(0,minute-10),payout,score:homeLive+'–'+awayLive}); // seed so the line exists at load
-    history.push({minute,payout,score:homeLive+'–'+awayLive});
-  }
-  else if(history.length){ history[history.length-1]={minute,payout,score:homeLive+'–'+awayLive}; }
-  else { history.push({minute,payout,score:homeLive+'–'+awayLive}); }
-  drawGraph();
-  renderTable();
-  return st;
-}
-
-/* ---- chart (single series: no legend box; title names it) ---- */
-const CSSV=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const PROFIT=CSSV('--accent')||'#37E37E', LOSS_C=CSSV('--loss')||'#E8896B';
-const W=560,H=190,TOP=16,BOT=172,LPAD=6,RPAD=6;
-function xFor(i){ return LPAD + (i/Math.max(history.length-1,1))*(W-LPAD-RPAD); }
-let yMax=0;
-function drawGraph(){
-  yMax=Math.max(yourStake*2,...history.map(h=>h.payout),10);
-  const yFor=v=>BOT-(v/yMax)*(BOT-TOP);
-  const pts=history.map((h,i)=>`${xFor(i).toFixed(1)},${yFor(h.payout).toFixed(1)}`);
-  document.getElementById('pnlLine').setAttribute('d','M '+pts.join(' L '));
-  document.getElementById('pnlArea').setAttribute('d',
-    `M ${LPAD},${BOT} L ${pts.join(' L ')} L ${xFor(history.length-1).toFixed(1)},${BOT} Z`);
-  const last=history[history.length-1];
-  const stroke=last.payout>=yourStake?PROFIT:LOSS_C;
-  document.getElementById('pnlLine').setAttribute('stroke',stroke);
-  document.getElementById('fillGrad').innerHTML=
-    `<stop offset="0%" stop-color="${stroke}" stop-opacity="0.25"/><stop offset="100%" stop-color="${stroke}" stop-opacity="0"/>`;
-  const be=document.querySelector('.breakeven-line');
-  be.setAttribute('y1',yFor(yourStake)); be.setAttribute('y2',yFor(yourStake));
-  // goal markers
-  document.getElementById('goalMarks').innerHTML=goals.map(g=>{
-    const i=history.findIndex(h=>h.minute>=g.minute);
-    const x=xFor(i<0?history.length-1:i).toFixed(1);
-    return `<line class="goal-marker" x1="${x}" y1="${TOP}" x2="${x}" y2="${BOT}"/>
-            <text class="goal-label" x="${Math.min(Number(x)+4,W-90)}" y="${TOP+10}">${g.minute}' ${g.team}</text>`;
-  }).join('');
-}
-
-/* ---- crosshair + tooltip (hover layer, per interaction spec) ---- */
-const svg=document.getElementById('pnlSvg'), tip=document.getElementById('chartTip');
-document.getElementById('hitLayer').addEventListener('mousemove',ev=>{
-  if(history.length<2) return;
-  const r=svg.getBoundingClientRect();
-  const mx=(ev.clientX-r.left)*(W/r.width);
-  let best=0,bd=1e9;
-  history.forEach((h,i)=>{const d=Math.abs(xFor(i)-mx); if(d<bd){bd=d;best=i;}});
-  const h=history[best], x=xFor(best), y=BOT-(h.payout/yMax)*(BOT-TOP);
-  const cv=document.getElementById('crossV'), dot=document.getElementById('hoverDot');
-  cv.setAttribute('x1',x);cv.setAttribute('x2',x);cv.style.opacity=1;
-  dot.setAttribute('cx',x);dot.setAttribute('cy',y);dot.style.opacity=1;
-  const pnl=h.payout-yourStake;
-  tip.innerHTML=`<span class="t-min">${h.minute}' · ${h.score}</span><br>payout $${h.payout.toFixed(2)} <span class="${pnl>=0?'value pos':'value neg'}" style="font-size:11px;">(${pnl>=0?'+':'−'}$${Math.abs(pnl).toFixed(2)})</span>`;
-  tip.style.opacity=1;
-  const px=(x/W)*r.width, py=(y/H)*r.height;
-  tip.style.left=Math.min(px+12,r.width-140)+'px';
-  tip.style.top=Math.max(py-48,0)+'px';
-});
-document.getElementById('hitLayer').addEventListener('mouseleave',()=>{
-  tip.style.opacity=0;
-  document.getElementById('crossV').style.opacity=0;
-  document.getElementById('hoverDot').style.opacity=0;
-});
-
-/* ---- table view (accessibility) ---- */
-let tableOn=false;
-function toggleTable(){
-  tableOn=!tableOn;
-  document.getElementById('pnlTable').style.display=tableOn?'table':'none';
-  document.getElementById('tableToggle').textContent=tableOn?'Hide table':'View as table';
-}
-function renderTable(){
-  if(!tableOn) return;
-  document.getElementById('pnlTableBody').innerHTML=history.map(h=>{
-    const pnl=h.payout-yourStake;
-    return `<tr><td>${h.minute}'</td><td>${h.score}</td><td>$${h.payout.toFixed(2)}</td><td>${pnl>=0?'+':'−'}$${Math.abs(pnl).toFixed(2)}</td></tr>`;
-  }).join('');
-}
-
-/* ---- demo feed (stands in for the TxLine SSE stream) ---- */
-function simulateGoal(side){
-  if(side==='home') homeLive++; else awayLive++;
-  minute=Math.min(minute+1,90);
-  goals.push({minute,team:side==='home'?(MARKET?.home??'HOME').slice(0,3).toUpperCase():(MARKET?.away??'AWAY').slice(0,3).toUpperCase()});
-  const st=render(true);
-  const card=document.getElementById('graphCard');
-  card.classList.remove('flash-win','flash-lose'); void card.offsetWidth;
-  card.classList.add(st.youOut.isWinner?'flash-win':'flash-lose');
-  setTimeout(()=>card.classList.remove('flash-win','flash-lose'),700);
-}
-function advanceClock(){ minute=Math.min(minute+5,90); render(true); }
 
 function toast(msg){
   const t=document.getElementById('toast');
@@ -916,9 +204,8 @@ function toast(msg){
 /* eager-connect if the wallet already trusts this site */
 (async()=>{
   const p=getProvider();
-  if(p){ try{ const r=await p.connect({onlyIfTrusted:true}); walletPubkey=(r.publicKey??p.publicKey).toString(); renderWallet(); fetchSolBalance(); checkExistingPosition(); }catch(_){} }
+  if(p){ try{ const r=await p.connect({onlyIfTrusted:true}); walletPubkey=(r.publicKey??p.publicKey).toString(); renderWallet(); }catch(_){} }
 })();
-render(true);
 </script>
 </body>
 </html>

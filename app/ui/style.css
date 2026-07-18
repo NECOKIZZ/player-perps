@@ -6,28 +6,28 @@
    ============================================================ */
 
 :root{
-  /* --- surfaces (near-black, faint green cast) --- */
-  --bg:#080D0A;
-  --bg-2:#0B120E;
-  --surface:#0E1712;
-  --surface-2:#131F18;
-  --line:#1E2C24;
-  --line-2:#2B3D33;
+  /* --- surfaces: pure black, neutral grays (no green cast) --- */
+  --bg:#000000;
+  --bg-2:#0A0A0A;
+  --surface:#0D0D0D;
+  --surface-2:#161616;
+  --line:#222222;
+  --line-2:#333333;
 
-  /* --- ink --- */
-  --text:#EDF4EF;
-  --muted:#87998E;
-  --muted-2:#4E5D54;
+  /* --- ink: pure white + neutral grays --- */
+  --text:#FFFFFF;
+  --muted:#B8B8B8;
+  --muted-2:#6E6E6E;
 
   /* --- the one accent --- */
   --accent:#37E37E;
-  --accent-ink:#04160B;
-  --accent-dim:#10281A;      /* flat tint fill, not a glow */
+  --accent-ink:#000000;
+  --accent-dim:#0A2415;      /* flat green tint fill, not a glow */
   --accent-line:#1E4A31;
 
-  /* --- functional only (PnL, lost state) --- */
-  --loss:#E8896B;
-  --loss-dim:#2A1712;
+  /* --- functional (lost state) — stays on the black/white/green palette --- */
+  --loss:#FFFFFF;
+  --loss-dim:#1C1C1C;
 
   /* --- type --- */
   --display:'Bebas Neue',sans-serif;
@@ -70,12 +70,20 @@ h1,h2,h3{margin:0;}
 /* ---------- nav ---------- */
 .nav{
   position:sticky;top:0;z-index:60;
-  background:rgba(8,13,10,.72);backdrop-filter:blur(14px) saturate(140%);
+  background:rgba(0,0,0,.72);backdrop-filter:blur(14px) saturate(140%);
   border-bottom:1px solid var(--line);
 }
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px;}
-.logo{display:flex;align-items:center;gap:0;font-family:var(--display);font-size:23px;letter-spacing:.07em;color:var(--text);}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:23px;letter-spacing:.07em;color:var(--text);}
 .logo .bang{color:var(--accent);}
+/* logo placeholder — drop img/logo.png and it replaces the LOGO box automatically */
+.logo-mark{
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:34px;height:34px;border-radius:9px;border:1px dashed var(--line-2);
+  background:var(--surface);font-family:var(--mono);font-size:8px;letter-spacing:.08em;
+  color:var(--muted-2);overflow:hidden;
+}
+.logo-mark img{width:100%;height:100%;object-fit:contain;}
 .nav-links{display:flex;align-items:center;gap:30px;font-size:14.5px;font-weight:500;}
 .nav-links a{color:var(--muted);transition:color .16s;}
 .nav-links a:hover{color:var(--text);}
