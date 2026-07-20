@@ -74,16 +74,17 @@ h1,h2,h3{margin:0;}
   border-bottom:1px solid var(--line);
 }
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px;}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:23px;letter-spacing:.07em;color:var(--text);}
-.logo .bang{color:var(--accent);}
-/* logo placeholder — drop img/logo.png and it replaces the LOGO box automatically */
-.logo-mark{
-  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
-  width:34px;height:34px;border-radius:9px;border:1px dashed var(--line-2);
-  background:var(--surface);font-family:var(--mono);font-size:8px;letter-spacing:.08em;
-  color:var(--muted-2);overflow:hidden;
+/* ---------- wordmark: type-only logo, football stands in for the O ---------- */
+.logo{display:flex;align-items:center;color:var(--text);}
+.wordmark{
+  display:inline-block;font-family:var(--sans);font-weight:700;font-size:20px;
+  letter-spacing:.05em;text-transform:uppercase;line-height:1;white-space:nowrap;
+  transform:skewX(-8deg);
 }
-.logo-mark img{width:100%;height:100%;object-fit:contain;}
+.wordmark .bang{color:var(--accent);margin-left:2px;letter-spacing:.02em;}
+.ball-o{display:inline-block;width:.76em;height:.76em;vertical-align:-.05em;margin:0 .06em;color:var(--text);transform:skewX(8deg);}
+.ball-o svg{display:block;width:100%;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.logo:hover .ball-o svg{transform:rotate(180deg);}
 .nav-links{display:flex;align-items:center;gap:30px;font-size:14.5px;font-weight:500;}
 .nav-links a{color:var(--muted);transition:color .16s;}
 .nav-links a:hover{color:var(--text);}
@@ -202,7 +203,7 @@ h1,h2,h3{margin:0;}
 /* ---------- footer ---------- */
 .footer{border-top:1px solid var(--line);margin-top:var(--gap-section);padding:48px 0 56px;}
 .footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;align-items:flex-start;margin-bottom:34px;}
-.footer .logo{font-size:21px;}
+.footer .wordmark{font-size:18px;}
 .footer .net-pill{
   font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--accent);
   background:var(--surface-2);border:1px solid var(--line-2);padding:5px 12px;border-radius:20px;text-transform:uppercase;
